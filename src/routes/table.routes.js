@@ -1,8 +1,10 @@
 import express from 'express';
 import {
   createTable,
+  deleteTable,
   getAllTables,
-  getAvailableTables
+  getAvailableTables,
+  updateTable
 } from '../controllers/table.controller.js';
 import { verifyToken } from '../middleware/auth.middleware.js';
 
