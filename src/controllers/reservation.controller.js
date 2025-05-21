@@ -97,7 +97,7 @@ export const updateReservation = async (req, res) => {
 
     const conflict = await Reservation.findOne({
       where: {
-        id: { [Op.ne]: id },
+        id_reservation: { [Op.ne]: id },
         table_id,
         date,
         time,
