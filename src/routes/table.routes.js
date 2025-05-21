@@ -13,5 +13,7 @@ router.use(verifyToken);
 router.post('/', createTable);
 router.get('/', getAllTables);
 router.get('/available', getAvailableTables);
+router.put('/:id', updateTable);
+router.delete('/:id', deleteTable);
 
 export default router;

@@ -61,3 +61,35 @@ export const getAvailableTables = async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch available tables', error });
   }
 };
+
+export const updateTable = async (req, res) => {
+  const { id } = req.params;
+  const { capacity, location } = req.body;
+
+  try {
+    const table = await Table.findByPk(id);
+    if (!table) return res.status(404).json({ message: 'Table not found' });
+
+    if (capacity) table.capacity = capacity;
+    if (location) table.location = location;
+    
+    await table.save();
+    res.json(table);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update table', error });
+  }
+};
+
+export const deleteTable = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const table = await Table.findByPk(id);
+    if (!table) return res.status(404).json({ message: 'Table not found' });
+
+    await table.destroy();
+    res.json({ message: 'Table deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to delete table', error });
+  }
+};
