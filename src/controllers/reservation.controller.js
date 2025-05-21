@@ -1,7 +1,7 @@
 import Reservation from "../models/reservation.model.js"
 import Table from "../models/table.model.js"
 import Customer from "../models/customer.model.js"
-import { sendReservationEmail } from "../utils/mailer.js"
+import { sendReservationEmail, sendCancellationEmail } from "../utils/mailer.js"
 import { Op } from "sequelize"
 
 export const createReservation = async (req, res) => {
@@ -157,6 +157,16 @@ export const cancelReservation = async (req, res) => {
       table.status = "available"
       await table.save()
     }
+
+    // Send cancellation email
+    const customer = await Customer.findByPk(reservation.customer_id)
+    await sendCancellationEmail(customer.email, {
+      name: customer.name,
+      date: reservation.date,
+      time: reservation.time,
+      people: reservation.people,
+      table_id: reservation.table_id,
+    })
 
     res.json({ message: "Reservation cancelled" })
   } catch (error) {
